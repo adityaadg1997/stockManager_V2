@@ -4,9 +4,9 @@ spring:
   application:
     name: jmdt-stock-manager
   datasource:
-    url: jdbc:postgresql://cee3ebbhveeoab.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/dc058skk5mqqeb
-    username: u9jffqrb2c64m8
-    password: pd07099c12a2d21b7d8c9a6000311ede0db2bab31616ae071da35006929bf8589
+    url: jdbc:postgresql://localhost:5432/stockManagerV2
+    username: postgres
+    password: root
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
