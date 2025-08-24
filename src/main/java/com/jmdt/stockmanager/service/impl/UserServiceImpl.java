@@ -1,11 +1,11 @@
 package com.jmdt.stockmanager.service.impl;
 
-import com.jmdt.stockmanager.constants.AppConstants;
+import com.jmdt.stockmanager.enums.UserRole;
 import com.jmdt.stockmanager.exception.StockManagerException;
-import com.jmdt.stockmanager.models.MyUser;
-import com.jmdt.stockmanager.models.Role;
+import com.jmdt.stockmanager.models.Business;
+import com.jmdt.stockmanager.models.User;
 import com.jmdt.stockmanager.payloads.UserDto;
-import com.jmdt.stockmanager.repository.RoleRepository;
+import com.jmdt.stockmanager.repository.BusinessRepository;
 import com.jmdt.stockmanager.repository.UserRepository;
 import com.jmdt.stockmanager.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-
-import static com.jmdt.stockmanager.constants.AppConstants.ROLE_ADMIN_NAME;
-import static com.jmdt.stockmanager.constants.AppConstants.ROLE_MANAGER_NAME;
 
 @Slf4j
 @Service
@@ -30,53 +24,61 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private BusinessRepository businessRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Override
     public UserDto signUp(UserDto userDto, String userRole) {
 
         //if user already exist with this email then return with message
-        Optional<MyUser> duplicateUser = userRepository.findByEmail(userDto.getEmail());
+        Optional<User> duplicateUser = userRepository.findByEmail(userDto.getEmail());
         if(duplicateUser.isPresent()){
             throw new StockManagerException("Hi "+ userDto.getFirstName() + ", this email already exists");
         }
 
-        MyUser user = this.modelMapper.map(userDto, MyUser.class);
-        String randomId = UUID.randomUUID().toString();
-        user.setUserId(randomId);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        User user = new User();
+        user.setName(userDto.getFirstName() + " " + (userDto.getLastName() != null ? userDto.getLastName() : ""));
+        user.setEmail(userDto.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
 
-        Role role;
-        /**assign role to new user -
-         * 1. get role by role_id(ROLE_CUSTOMER_ID), in role repo ?
-         * 2. then add the role in user
-         * 3. then save the user*/
-        switch (userRole) {
-            case ROLE_ADMIN_NAME:
-                role = this.roleRepository.findById(AppConstants.ROLE_ADMIN_ID)
-                        .orElseThrow(() -> new IllegalStateException("Admin role not found in DB"));
+        // Set role based on userRole parameter
+        UserRole role;
+        switch (userRole.toUpperCase()) {
+            case "ADMIN":
+                role = UserRole.ADMIN;
                 break;
-            case ROLE_MANAGER_NAME:
-                role = this.roleRepository.findById(AppConstants.ROLE_MANAGER_ID)
-                        .orElseThrow(() -> new IllegalStateException("Manager role not found in DB"));
+            case "MANAGER":
+                role = UserRole.MANAGER;
+                break;
+            case "STAFF":
+                role = UserRole.STAFF;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid role: " + userRole);
         }
+        user.setRole(role);
 
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
-        log.info("user.getRoles().add(role) - {} ", user.getRoles());
+        // For now, we'll need to handle business assignment separately
+        // This is a simplified version - in a real scenario, you'd need to determine
+        // which business the user belongs to during signup
+        
+        log.info("Creating user with role: {}", role);
 
-        MyUser newUser = this.userRepository.save(user);
+        User newUser = this.userRepository.save(user);
 
-        return this.modelMapper.map(newUser, UserDto.class);
+        // Map back to UserDto
+        UserDto resultDto = new UserDto();
+        resultDto.setFirstName(newUser.getName().split(" ")[0]);
+        if (newUser.getName().split(" ").length > 1) {
+            resultDto.setLastName(newUser.getName().split(" ", 2)[1]);
+        }
+        resultDto.setEmail(newUser.getEmail());
+        
+        return resultDto;
     }
 }
