@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.jmdt</groupId>
-	<artifactId>stockmanager</artifactId>
+	<artifactId>stockManagerV2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>stockmanager</name>
-	<description>Jay Mata Di Trading stock management Application for agriculture products</description>
+	<name>stockManagerV2</name>
+	<description>Jay Mata Di Trading stock management V2 Application for agriculture products</description>
 	<url/>
 	<licenses>
 		<license/>
