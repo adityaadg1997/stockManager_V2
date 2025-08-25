@@ -1,5 +1,6 @@
 package com.jmdt.stockmanager.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jmdt.stockmanager.enums.PlanType;
 import com.jmdt.stockmanager.enums.SubscriptionStatus;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_id", nullable = false)
     private Business business;
@@ -29,7 +31,7 @@ public class Subscription {
     private String stripeSubscriptionId;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDateTime startDate = LocalDateTime.now();
 
     @Column(name = "end_date")
     private LocalDateTime endDate;

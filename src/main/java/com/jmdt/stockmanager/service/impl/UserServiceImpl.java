@@ -66,7 +66,16 @@ public class UserServiceImpl implements UserService {
         // For now, we'll need to handle business assignment separately
         // This is a simplified version - in a real scenario, you'd need to determine
         // which business the user belongs to during signup
-        
+        // Assign business to user during signup
+        if (userDto.getBusinessEmail() != null) {
+            Optional<Business> businessOpt = businessRepository.findByContactEmail(userDto.getBusinessEmail());
+            if (businessOpt.isPresent()) {
+                user.setBusiness(businessOpt.get());
+            } else {
+                throw new StockManagerException("Business not found with ID: " + userDto.getBusinessEmail());
+            }
+        }
+
         log.info("Creating user with role: {}", role);
 
         User newUser = this.userRepository.save(user);

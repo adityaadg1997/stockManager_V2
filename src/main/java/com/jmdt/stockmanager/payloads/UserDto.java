@@ -18,4 +18,5 @@ public class UserDto {
     private String email;
     private String password;
     private Set<Role> roles;
+    private String businessEmail;
 }

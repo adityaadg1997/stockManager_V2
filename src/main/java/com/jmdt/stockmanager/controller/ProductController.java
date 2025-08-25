@@ -1,5 +1,6 @@
 package com.jmdt.stockmanager.controller;
 
+import com.jmdt.stockmanager.dto.request.ProductRequestDTO;
 import com.jmdt.stockmanager.models.Product;
 import com.jmdt.stockmanager.models.ProductVariant;
 import com.jmdt.stockmanager.models.ProductBatch;
@@ -37,7 +38,7 @@ public class ProductController {
      */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
-    public ResponseEntity<ApiResponse> createProduct(@RequestBody Product product) {
+    public ResponseEntity<ApiResponse> createProduct(@RequestBody ProductRequestDTO product) {
         try {
             log.info("Creating new product: {}", product.getName());
             Product createdProduct = productService.createProduct(product);

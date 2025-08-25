@@ -1,5 +1,6 @@
 package com.jmdt.stockmanager.service.impl;
 
+import com.jmdt.stockmanager.dto.request.ProductRequestDTO;
 import com.jmdt.stockmanager.models.*;
 import com.jmdt.stockmanager.repository.*;
 import com.jmdt.stockmanager.service.ProductService;
@@ -9,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -31,30 +34,30 @@ public class ProductServiceImpl implements ProductService {
     // ===== PRODUCT CRUD OPERATIONS =====
 
     @Override
-    public Product createProduct(Product product) {
-        log.info("Creating new product: {}", product.getName());
+    public Product createProduct(ProductRequestDTO request) {
+        log.info("Creating new product: {}", request.getName());
         
         // Validate business exists
-        if (!businessRepository.existsById(product.getBusiness().getId())) {
-            throw new ResourceNotFoundException("Business not found with id: " + product.getBusiness().getId());
+        if (!businessRepository.existsById(request.getBusinessId())) {
+            throw new ResourceNotFoundException("Business not found with id: " + request.getBusinessId());
         }
         
         // Validate vendor if provided
-        if (product.getVendor() != null && !vendorRepository.existsById(product.getVendor().getId())) {
-            throw new ResourceNotFoundException("Vendor not found with id: " + product.getVendor().getId());
+        if (request.getVendorId() != null && !vendorRepository.existsById(request.getVendorId())) {
+            throw new ResourceNotFoundException("Vendor not found with id: " + request.getVendorId());
         }
-        
+        Product product = new Product();
         // Set default values
-        if (product.getQuantity() == null) {
+        if (request.getQuantity() == null) {
             product.setQuantity(0);
         }
-        if (product.getIsActive() == null) {
+        if (request.getIsActive() == null) {
             product.setIsActive(true);
         }
-        if (product.getHasWarranty() == null) {
+        if (request.getHasWarranty() == null) {
             product.setHasWarranty(false);
         }
-        if (product.getBatchTracked() == null) {
+        if (request.getBatchTracked() == null) {
             product.setBatchTracked(false);
         }
         

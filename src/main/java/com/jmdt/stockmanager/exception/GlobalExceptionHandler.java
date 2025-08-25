@@ -1,6 +1,8 @@
 package com.jmdt.stockmanager.exception;
 
 import com.jmdt.stockmanager.payloads.ApiResponse;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,4 +31,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleGeneralException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+        public ResponseEntity<ApiResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+            String message = "Database error: " + ex.getMostSpecificCause().getMessage();
+            return new ResponseEntity<>(new ApiResponse(message, false), HttpStatus.CONFLICT);
+        }
 }

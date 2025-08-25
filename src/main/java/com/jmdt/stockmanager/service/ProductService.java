@@ -1,5 +1,6 @@
 package com.jmdt.stockmanager.service;
 
+import com.jmdt.stockmanager.dto.request.ProductRequestDTO;
 import com.jmdt.stockmanager.models.Product;
 import com.jmdt.stockmanager.models.ProductVariant;
 import com.jmdt.stockmanager.models.ProductBatch;
@@ -10,7 +11,7 @@ import java.util.Optional;
 public interface ProductService {
     
     // Product CRUD operations
-    Product createProduct(Product product);
+    Product createProduct(ProductRequestDTO product);
     Product updateProduct(Long productId, Product product);
     Optional<Product> getProductById(Long productId);
     List<Product> getProductsByBusinessId(Long businessId);

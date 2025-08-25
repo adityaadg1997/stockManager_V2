@@ -1,5 +1,6 @@
 package com.jmdt.stockmanager.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jmdt.stockmanager.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -33,6 +34,7 @@ public class User implements UserDetails {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "business_id", nullable = false)
     private Business business;

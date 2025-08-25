@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/businesses")
+@RequestMapping("/api/businesses")
 @CrossOrigin(origins = "*")
 public class BusinessController {
 
@@ -73,14 +73,14 @@ public class BusinessController {
         return ResponseEntity.ok(new ApiResponse("Business deleted successfully", true));
     }
 
-    @GetMapping("/check-name/{name}")
-    public ResponseEntity<ApiResponse> checkBusinessNameExists(@PathVariable String name) {
+    @GetMapping("/check-name")
+    public ResponseEntity<ApiResponse> checkBusinessNameExists(@RequestParam String name) {
         boolean exists = businessService.existsByName(name);
         return ResponseEntity.ok(new ApiResponse("Name availability checked", !exists));
     }
 
-    @GetMapping("/check-email/{email}")
-    public ResponseEntity<ApiResponse> checkBusinessEmailExists(@PathVariable String email) {
+    @GetMapping("/check-email")
+    public ResponseEntity<ApiResponse> checkBusinessEmailExists(@RequestParam String email) {
         boolean exists = businessService.existsByContactEmail(email);
         return ResponseEntity.ok(new ApiResponse("Email availability checked", !exists));
     }

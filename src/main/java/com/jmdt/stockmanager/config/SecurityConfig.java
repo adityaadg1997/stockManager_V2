@@ -38,7 +38,8 @@ public class SecurityConfig {
 
     public static final String[] PUBLIC_URLs = {
             "/api/auth/login",
-            "/api/user/register/**"
+            "/api/user/register/**",
+            "/api/onboarding/register"
     };
 
     public static final String[] RESTRICTED_URLs = {

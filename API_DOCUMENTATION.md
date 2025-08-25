@@ -24,6 +24,20 @@ All APIs return responses in the following format:
 ```
 
 ---
+# 0. Onboarding APIs
+## 0.1 Registers a new business, admin user, and starter subscription in a single request.
+```bash
+curl -X POST http://localhost:8080/api/onboarding/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "businessName": "ABC Shop",
+    "businessEmail": "owner@abc.com",
+    "adminName": "John Doe",
+    "adminEmail": "owner@abc.com",
+    "adminPassword": "yourPassword"
+  }'
+```  
+
 
 # 1. BUSINESS MANAGEMENT APIs
 
