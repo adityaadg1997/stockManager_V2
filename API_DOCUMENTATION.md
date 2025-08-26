@@ -1021,6 +1021,39 @@ curl -X POST http://localhost:8080/api/vendors \
   }'
 ```
 
+### Get Vendor by ID
+```bash
+curl -X GET http://localhost:8080/api/vendors/1 \
+  -H "Authorization: Bearer <token>"
+````
+
+### Update Vendor
+```bash
+curl -X PUT http://localhost:8080/api/vendors/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token>" \
+  -d '{
+    "name": "Updated Supplier Inc",
+    "contactEmail": "updated@supplier.com",
+    "phone": "+1-555-0201",
+    "address": "789 New Supplier Ave, City, State",
+    "paymentTerms": "Net 45"
+  }'
+```
+
+### Get Vendors by Business
+```bash
+curl -X GET http://localhost:8080/api/vendors/business/1 \
+  -H "Authorization: Bearer <token>"
+```
+
+### Delete Vendor
+```bash
+curl -X DELETE http://localhost:8080/api/vendors/1 \
+  -H "Authorization: Bearer <token>"
+```
+
+
 ### Create Sample Warehouse
 ```bash
 curl -X POST http://localhost:8080/api/inventory/warehouses \
