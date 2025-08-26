@@ -36,31 +36,42 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct(ProductRequestDTO request) {
         log.info("Creating new product: {}", request.getName());
-        
+
         // Validate business exists
         if (!businessRepository.existsById(request.getBusinessId())) {
             throw new ResourceNotFoundException("Business not found with id: " + request.getBusinessId());
         }
-        
+
         // Validate vendor if provided
         if (request.getVendorId() != null && !vendorRepository.existsById(request.getVendorId())) {
             throw new ResourceNotFoundException("Vendor not found with id: " + request.getVendorId());
         }
+
         Product product = new Product();
-        // Set default values
-        if (request.getQuantity() == null) {
-            product.setQuantity(0);
+        product.setName(request.getName());
+        product.setSkuCode(request.getSkuCode());
+        product.setCategory(request.getCategory());
+        product.setQuantity(request.getQuantity() != null ? request.getQuantity() : 0);
+        product.setCostPrice(request.getCostPrice());
+        product.setSellingPrice(request.getSellingPrice());
+        product.setImageUrl(request.getImageUrl());
+        product.setIsActive(request.getIsActive() != null ? request.getIsActive() : true);
+        product.setHasWarranty(request.getHasWarranty() != null ? request.getHasWarranty() : false);
+        product.setWarrantyDurationDays(request.getWarrantyDurationDays());
+        product.setBatchTracked(request.getBatchTracked() != null ? request.getBatchTracked() : false);
+
+        // Set business and vendor if needed
+        if (request.getBusinessId() != null) {
+            Business business = businessRepository.findById(request.getBusinessId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Business not found with id: " + request.getBusinessId()));
+            product.setBusiness(business);
         }
-        if (request.getIsActive() == null) {
-            product.setIsActive(true);
+        if (request.getVendorId() != null) {
+            Vendor vendor = vendorRepository.findById(request.getVendorId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Vendor not found with id: " + request.getVendorId()));
+            product.setVendor(vendor);
         }
-        if (request.getHasWarranty() == null) {
-            product.setHasWarranty(false);
-        }
-        if (request.getBatchTracked() == null) {
-            product.setBatchTracked(false);
-        }
-        
+
         Product savedProduct = productRepository.save(product);
         log.info("Product created successfully with id: {}", savedProduct.getId());
         return savedProduct;
