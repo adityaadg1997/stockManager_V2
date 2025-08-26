@@ -1,6 +1,6 @@
 package com.jmdt.stockmanager.controller;
 
-import com.jmdt.stockmanager.dto.ReplacementRecordDTO;
+import com.jmdt.stockmanager.dto.request.ReplacementRecordDTO;
 import com.jmdt.stockmanager.service.ReplacementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

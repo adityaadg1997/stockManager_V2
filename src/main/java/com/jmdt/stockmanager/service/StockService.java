@@ -1,6 +1,6 @@
 package com.jmdt.stockmanager.service;
 
-import com.jmdt.stockmanager.dto.StockDashboardDTO;
+import com.jmdt.stockmanager.dto.request.StockDashboardDTO;
 
 import java.util.List;
 

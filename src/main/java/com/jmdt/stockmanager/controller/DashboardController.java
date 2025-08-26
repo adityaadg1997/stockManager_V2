@@ -1,6 +1,6 @@
 package com.jmdt.stockmanager.controller;
 
-import com.jmdt.stockmanager.dto.StockDashboardDTO;
+import com.jmdt.stockmanager.dto.request.StockDashboardDTO;
 import com.jmdt.stockmanager.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

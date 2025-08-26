@@ -1,6 +1,6 @@
 package com.jmdt.stockmanager.service;
 
-import com.jmdt.stockmanager.dto.ReplacementRecordDTO;
+import com.jmdt.stockmanager.dto.request.ReplacementRecordDTO;
 
 import java.util.List;
 

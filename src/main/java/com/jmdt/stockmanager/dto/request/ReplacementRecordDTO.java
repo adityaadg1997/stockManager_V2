@@ -1,4 +1,4 @@
-package com.jmdt.stockmanager.dto;
+package com.jmdt.stockmanager.dto.request;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.jmdt.stockmanager.service.impl;
 
-import com.jmdt.stockmanager.dto.StockDashboardDTO;
+import com.jmdt.stockmanager.dto.request.StockDashboardDTO;
 import com.jmdt.stockmanager.models.ReplacementRecord;
 import com.jmdt.stockmanager.models.Sales;
 import com.jmdt.stockmanager.models.Stock;
